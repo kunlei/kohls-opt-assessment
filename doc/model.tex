@@ -1,0 +1,60 @@
+\documentclass[a4, 11pt]{article}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{multirow}
+\usepackage{hhline}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{color}
+\usepackage{longtable}
+\usepackage{multicol}
+\usepackage{soul}
+\usepackage{amssymb} % for \smallsetminus
+\usepackage{geometry}
+\usepackage{verbatim}
+\usepackage{comment}
+\usepackage{lipsum}
+\linespread{1.5} 
+
+
+
+
+\begin{document}
+
+
+\title{Optimization}
+\author{Kunlei Lian}
+\maketitle
+
+Let $\mathcal{S} = \{1, 2, \cdots, 10\}$ denote the set of stores under consideration.
+Let $\mathcal{T} = \{A, B, C\}$ indicate all the available types of pizzas to display.
+The price and cost of a certain pizza type is dependent on the store location and type, and are represented by $p_{st}$ and $c_{st}$.
+The demand of pizza is related to its display quantity $quantity$:
+
+\begin{align}
+	d_{st} = \alpha \cdot quantity^{\beta},
+\end{align} 
+where both $\alpha$ and $\beta$ are given parameters.
+
+To model this problem, we define the following decision variables:
+
+\begin{itemize}
+	\item $x_{st}$: a non-negative integer variable that represents the number of pizzas to display for store $s$ and type $t$.
+\end{itemize}
+
+The problem could be formulated as,
+
+\begin{align}
+	\text{max.} &\quad \sum_{s \in \mathcal{S}} \sum_{t \in \mathcal{T}} p_{st} \alpha_{st} x_{st}^{\beta_{st}} \label{obj} \\
+	\text{s.t.} &\quad  \sum_{t \in \mathcal{T}} x_{st} \leq 20, \ \forall s \in \mathcal{S} \label{cons1} \\
+	&\quad \sum_{s \in \mathcal{S}} \sum_{t \in \mathcal{T}} c_{st} x_{st} \leq 100000 \label{cons2} \\
+	&\quad x_{st} \in N_0 = \{0, 1, 2, \cdots\}, \ \forall s \in \mathcal{S}, t \in \mathcal{T}
+\end{align}
+
+	
+\end{document}
