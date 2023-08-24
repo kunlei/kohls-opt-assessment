@@ -2,25 +2,6 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{graphicx}
-\usepackage{xcolor}
-\usepackage{multirow}
-\usepackage{hhline}
-\usepackage{algorithm}
-\usepackage{algpseudocode}
-\usepackage{caption}
-\usepackage{subcaption}
-\usepackage{float}
-\usepackage{color}
-\usepackage{longtable}
-\usepackage{multicol}
-\usepackage{soul}
-\usepackage{amssymb} % for \smallsetminus
-\usepackage{geometry}
-\usepackage{verbatim}
-\usepackage{comment}
-\usepackage{lipsum}
-\linespread{1.5} 
-
 
 
 
@@ -33,7 +14,7 @@
 
 Let $\mathcal{S} = \{1, 2, \cdots, 10\}$ denote the set of stores under consideration.
 Let $\mathcal{T} = \{A, B, C\}$ indicate all the available types of pizzas to display.
-The price and cost of a certain pizza type is dependent on the store location and type, and are represented by $p_{st}$ and $c_{st}$.
+The price and cost of a certain pizza type is dependent on the store location and type, and are represented by $p_{st}$ and $c_{st}$, respectively.
 The demand of pizza is related to its display quantity $quantity$:
 
 \begin{align}
@@ -41,20 +22,51 @@ The demand of pizza is related to its display quantity $quantity$:
 \end{align} 
 where both $\alpha$ and $\beta$ are given parameters.
 
+\section{Model 1}
+In this problem, we need to decide the number of pizzas to display for each type in each store in order to maximize the total profit across the chain.
 To model this problem, we define the following decision variables:
 
 \begin{itemize}
-	\item $x_{st}$: a non-negative integer variable that represents the number of pizzas to display for store $s$ and type $t$.
+	\item $x_{st}$: a nonnegative integer variable that represents the number of pizzas to display for store $s$ and type $t$.
 \end{itemize}
 
-The problem could be formulated as,
+The problem could then be formulated as,
 
 \begin{align}
-	\text{max.} &\quad \sum_{s \in \mathcal{S}} \sum_{t \in \mathcal{T}} p_{st} \alpha_{st} x_{st}^{\beta_{st}} \label{obj} \\
-	\text{s.t.} &\quad  \sum_{t \in \mathcal{T}} x_{st} \leq 20, \ \forall s \in \mathcal{S} \label{cons1} \\
-	&\quad \sum_{s \in \mathcal{S}} \sum_{t \in \mathcal{T}} c_{st} x_{st} \leq 100000 \label{cons2} \\
-	&\quad x_{st} \in N_0 = \{0, 1, 2, \cdots\}, \ \forall s \in \mathcal{S}, t \in \mathcal{T}
+	\text{max.} &\quad \sum_{s \in \mathcal{S}} \sum_{t \in \mathcal{T}} p_{st} \alpha_{st} x_{st}^{\beta_{st}} \label{m1-obj} \\
+	\text{s.t.} &\quad  \sum_{t \in \mathcal{T}} x_{st} \leq 20, \ \forall s \in \mathcal{S} \label{m1-cons1} \\
+	&\quad \sum_{s \in \mathcal{S}} \sum_{t \in \mathcal{T}} c_{st} x_{st} \leq 100000 \label{m1-cons2} \\
+	&\quad x_{st} \in N^0 = \{0, 1, 2, \cdots\}, \ \forall s \in \mathcal{S}, t \in \mathcal{T}
 \end{align}
+
+
+
+\section{Model 2}
+
+To model this problem, we define the following decision variables:
+
+\begin{itemize}
+	\item $x_{st}$: a nonnegative integer variable that represents the number of pizzas to display for store $s$ and type $t$.
+	\item $v_{stg}$: a nonnegative variable that inidicates the number of type $t$ pizzas to display for group $g$ in store $s$
+	\item $y_{stg}$: a binary variable that equals 1 if store $s$ is assigned to group $g$ for pizza type $t$, 0 otherwise.
+	\item $z_{tg}$: a nonnegative integer variable that represents the number of type $t$ pizzas to display for group $g$
+\end{itemize}
+
+\begin{align}
+	\text{max.} &\quad \sum_{s \in \mathcal{S}} \sum_{t \in \mathcal{T}} p_{st} \alpha_{st} x_{st}^{\beta_{st}} \label{m2-obj} \\
+	\text{s.t.} &\quad  \sum_{t \in \mathcal{T}} x_{st} \leq 20, \ \forall s \in \mathcal{S} \label{m2-cons1} \\
+	&\quad \sum_{s \in \mathcal{S}} \sum_{t \in \mathcal{T}} c_{st} x_{st} \leq 100000 \label{m2-cons2} \\
+	&\quad x_{st} = \sum_{g \in \mathcal{G}} v_{stg}, \, \forall s \in \mathcal{S}, t \in \mathcal{T} \label{m2-cons3} \\
+	&\quad \sum_{g \in \mathcal{G}} y_{stg} = 1, \, \forall s \in \mathcal{S}, t \in \mathcal{T} \label{m2-cons4} \\
+	&\quad \sum_{s \in \mathcal{S}} y_{stg} \geq 2, \, \forall t \in \mathcal{T}, g \in \mathcal{G} \label{m2-cons5} \\
+	&\quad v_{stg} \geq z_{tg} - (1 - y_{stg}) M, \, \forall s \in \mathcal{S}, t \in \mathcal{T}, g \in \mathcal{G} \label{m2-cons6} \\
+	&\quad v_{stg} \leq y_{stg} M, \, \forall s \in \mathcal{S}, t \in \mathcal{T}, g \in \mathcal{G} \label{m2-cons7}  \\
+	&\quad v_{stg} \geq 0, \, \forall s \in \mathcal{S}, t \in \mathcal{T}, g \in \mathcal{G} \label{m2-cons8} \\
+	&\quad v_{stg} \leq z_{tg}, \, \forall s \in \mathcal{S}, t \in \mathcal{T}, g \in \mathcal{G} \label{m2-cons9} \\
+	&\quad x_{st}, v_{stg}, z_{tg} \in N^0, \, \forall s \in \mathcal{S}, t \in \mathcal{T}, g \in \mathcal{G} \label{m2-cons10} \\
+	&\quad y_{stg} \in \{0, 1\}, \, \forall s \in \mathcal{S}, t \in \mathcal{T}, g \in \mathcal{G} \label{m2-cons11}
+\end{align}
+
 
 	
 \end{document}
