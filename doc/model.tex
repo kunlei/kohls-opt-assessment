@@ -4,11 +4,10 @@
 \usepackage{graphicx}
 
 
-
 \begin{document}
 
 
-\title{Optimization}
+\title{\vspace{-4cm}Pizza Assortment Optimization}
 \author{Kunlei Lian}
 \maketitle
 
@@ -36,13 +35,17 @@ The problem could then be formulated as,
 	\text{max.} &\quad \sum_{s \in \mathcal{S}} \sum_{t \in \mathcal{T}} p_{st} \alpha_{st} x_{st}^{\beta_{st}} \label{m1-obj} \\
 	\text{s.t.} &\quad  \sum_{t \in \mathcal{T}} x_{st} \leq 20, \ \forall s \in \mathcal{S} \label{m1-cons1} \\
 	&\quad \sum_{s \in \mathcal{S}} \sum_{t \in \mathcal{T}} c_{st} x_{st} \leq 100000 \label{m1-cons2} \\
-	&\quad x_{st} \in N^0 = \{0, 1, 2, \cdots\}, \ \forall s \in \mathcal{S}, t \in \mathcal{T}
+	&\quad x_{st} \in N^0 = \{0, 1, 2, \cdots\}, \ \forall s \in \mathcal{S}, t \in \mathcal{T} \label{m1-cons3}
 \end{align}
 
+In this formulation, the objective function \eqref{m1-obj} tries to maximize the total profit across all stores.
+The constraints \eqref{m1-cons1} make sure that there are at most 20 pizzas on display in each store.
+Constriants \eqref{m1-cons2} is the budget constraint, making sure the total cost does not exeed the given budget limit.
+The last constraints \eqref{m1-cons3} define variable types.
 
 
 \section{Model 2}
-
+In this problem, the stores are divided into 3 groups $\mathcal{G}$ for each pizza type.
 To model this problem, we define the following decision variables:
 
 \begin{itemize}
@@ -67,6 +70,14 @@ To model this problem, we define the following decision variables:
 	&\quad y_{stg} \in \{0, 1\}, \, \forall s \in \mathcal{S}, t \in \mathcal{T}, g \in \mathcal{G} \label{m2-cons11}
 \end{align}
 
-
+In this formulation, the objective function \eqref{m2-obj} aims to maximize the total profit across all stores.
+The constraints \eqref{m2-cons1} make sure that there are at most 20 pizzas on display in each store.
+Constriants \eqref{m2-cons2} is the budget constraint, making sure the total cost does not exeed the given budget limit.
+Constraints \eqref{m2-cons3} derive the number of type $t$ pizzas to display for store $s$.
+Constraints \eqref{m2-cons4} ensure that a store can only to assigned to one and only one group for a certain pizza type $t$.
+Constraints \eqref{m2-cons5} require that there are at least two stores in every group of type $t$.
+Constraints \eqref{m2-cons6} - \eqref{m2-cons9} are the linearization of $v_{stg} = y_{stg} * z_{tg}$, in which $M$ is a large number.
+In our case, $M$ could take the value of 20 as we can have at most 20 pizzas in a store.
+The last constraints \eqref{m2-cons11} define variable types.
 	
 \end{document}
