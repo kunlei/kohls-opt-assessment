@@ -7,6 +7,9 @@ from src.common.data_center import DataCenter
 
 
 class InputProcessor:
+    """
+    this class defines processors to parse input from various data sources
+    """
 
     def __init__(self):
         pass

@@ -33,6 +33,7 @@ class OptService:
         data_center: DataCenter = self._input_processor.process(pizza_data)
 
         # solve model 1
+        self._pizza_assort_optimizer.optimize(data_center)
 
         # solve model 2
 
@@ -45,7 +46,6 @@ if __name__ == "__main__":
     data_path = "/Users/klian/dev/learn/python/kohls-opt-assessment/tests/data"
     pizza_file = os.path.join(data_path, "new_pizza.csv")
     pizza = pd.read_csv(pizza_file)
-    print(pizza)
 
     opt_service = OptService()
     opt_service.optimize(pizza, False)
