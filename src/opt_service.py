@@ -5,9 +5,12 @@ import pandas as pd
 from src.common.data_center import DataCenter
 from src.processor.input_processor import InputProcessor
 from src.processor.output_processor import OutputProcessor
-from src.model.pizza_assort_optimizer import PizzaAssortOptimizer
-from src.model.pizza_assort_optimizer_group import PizzaAssortOptimizerGroup
+from src.utils.validator import Validator
+from src.model.pizza_assortment_optimizer import PizzaAssortmentOptimizer
+from src.model.pizza_assortment_optimizer_group import PizzaAssortOptimizerGroup
 import logging
+
+logging.basicConfig(level=logging.INFO)
 
 
 class OptService:
@@ -20,9 +23,11 @@ class OptService:
         # parse inputs
         self._input_processor = InputProcessor()
         # model 1 optimizer
-        self._pizza_assort_optimizer = PizzaAssortOptimizer()
+        self._pizza_assortment_optimizer = PizzaAssortmentOptimizer()
         # model 2 optimizer
-        self._pizza_assort_optimizer_group = PizzaAssortOptimizerGroup()
+        self._pizza_assortment_optimizer_group = PizzaAssortOptimizerGroup()
+        # result validator
+        self._validator = None
         # process output
         self._output_processor = OutputProcessor()
         logging.info("OptService constructor completes.")
@@ -31,9 +36,14 @@ class OptService:
         logging.info("OptService optimize() starts.")
         # process input for optimizer use
         data_center: DataCenter = self._input_processor.process(pizza_data)
+        self._validator = Validator(data_center)
 
         # solve model 1
-        self._pizza_assort_optimizer.optimize(data_center)
+        self._pizza_assortment_optimizer.optimize(data_center)
+        optimal_assortment_1 = self._pizza_assortment_optimizer.optimal_assortment
+        error_1 = self._validator.validate_model1_solution(optimal_assortment_1)
+        if len(error_1) > 0:
+            logging.error(error_1)
 
         # solve model 2
 

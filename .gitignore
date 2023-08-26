@@ -8,4 +8,5 @@ src/__pycache__/
 src/common/__pycache__/
 src/model/__pycache__/
 src/processor/__pycache__/
+src/utils/__pycache__/
 tests/.DS_Store
