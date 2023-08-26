@@ -1,3 +1,11 @@
 doc/*.aux
 doc/*.log
 doc/*.gz
+
+.idea
+
+src/__pycache__/
+src/common/__pycache__/
+src/model/__pycache__/
+src/processor/__pycache__/
+tests/.DS_Store
