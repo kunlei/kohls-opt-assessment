@@ -7,7 +7,7 @@ from src.processor.input_processor import InputProcessor
 from src.processor.output_processor import OutputProcessor
 from src.utils.validator import Validator
 from src.model.pizza_assortment_optimizer import PizzaAssortmentOptimizer
-from src.model.pizza_assortment_optimizer_group import PizzaAssortOptimizerGroup
+from src.model.pizza_assortment_optimizer_group import PizzaAssortmentOptimizerWtGroup
 import logging
 
 logging.basicConfig(level=logging.INFO)
@@ -25,7 +25,7 @@ class OptService:
         # model 1 optimizer
         self._pizza_assortment_optimizer = PizzaAssortmentOptimizer()
         # model 2 optimizer
-        self._pizza_assortment_optimizer_group = PizzaAssortOptimizerGroup()
+        self._pizza_assortment_optimizer_wt_group = PizzaAssortmentOptimizerWtGroup()
         # result validator
         self._validator = None
         # process output
@@ -39,13 +39,14 @@ class OptService:
         self._validator = Validator(data_center)
 
         # solve model 1
-        self._pizza_assortment_optimizer.optimize(data_center)
-        optimal_assortment_1 = self._pizza_assortment_optimizer.optimal_assortment
-        error_1 = self._validator.validate_model1_solution(optimal_assortment_1)
-        if len(error_1) > 0:
-            logging.error(error_1)
+        # self._pizza_assortment_optimizer.optimize(data_center)
+        # optimal_assortment_1 = self._pizza_assortment_optimizer.optimal_assortment
+        # error_1 = self._validator.validate_model1_solution(optimal_assortment_1)
+        # if len(error_1) > 0:
+        #     logging.error(error_1)
 
         # solve model 2
+        self._pizza_assortment_optimizer_wt_group.optimize(data_center)
 
         # prepare output
 

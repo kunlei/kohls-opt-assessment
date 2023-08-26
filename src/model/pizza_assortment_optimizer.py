@@ -11,8 +11,6 @@ class PizzaAssortmentOptimizer:
     """
     this class aims to find the optimal number of pizzas for each store
     """
-    MAX_PIZZA_PER_STORE = 20  # max. number of pizzas in a store
-    MAX_BUDGET = 100_000  # max. budget across the chain
 
     def __init__(self):
         self._data_center: DataCenter = None
@@ -79,7 +77,7 @@ class PizzaAssortmentOptimizer:
                 self._var_pizza_count[store.id][pizza_type]
                 for pizza_type in self._data_center.pizza_types
             ]
-            self._constraints.append(cpy.sum(constr_expr) <= PizzaAssortmentOptimizer.MAX_PIZZA_PER_STORE)
+            self._constraints.append(cpy.sum(constr_expr) <= self._data_center.max_pizza_count)
         logging.info("finish creating max pizza count constraints.")
 
     def _create_constr_max_budget(self):
@@ -88,7 +86,7 @@ class PizzaAssortmentOptimizer:
             for store in self._data_center.stores.values()
             for pizza_type in self._data_center.pizza_types
         ]
-        self._constraints.append(cpy.sum(constr_expr) <= PizzaAssortmentOptimizer.MAX_BUDGET)
+        self._constraints.append(cpy.sum(constr_expr) <= self._data_center.max_budget)
         logging.info("finish creating the budget constraint.")
 
     def _create_constr_variable_types(self):
@@ -96,7 +94,7 @@ class PizzaAssortmentOptimizer:
             for pizza_type in self._data_center.pizza_types:
                 self._constraints.append(self._var_pizza_count[store.id][pizza_type] >= 0)
                 self._constraints.append(
-                    self._var_pizza_count[store.id][pizza_type] <= PizzaAssortmentOptimizer.MAX_PIZZA_PER_STORE
+                    self._var_pizza_count[store.id][pizza_type] <= self._data_center.max_pizza_count
                 )
         logging.info("finish creating variable bound constraints.")
 

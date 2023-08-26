@@ -15,6 +15,7 @@ class DataCenter:
 
         self._max_pizza_count = 20
         self._max_budget = 100_000
+        self._num_pizza_groups = 3
 
     @property
     def stores(self) -> Dict[int, Store]:
@@ -31,3 +32,7 @@ class DataCenter:
     @property
     def max_budget(self):
         return self._max_budget
+
+    @property
+    def num_pizza_groups(self):
+        return self._num_pizza_groups
