@@ -3,6 +3,7 @@ import pandas as pd
 
 from src.opt_service import OptService
 
+
 class TestModel2:
 
     def test_inst_1(self):
