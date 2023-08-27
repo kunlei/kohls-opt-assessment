@@ -179,7 +179,7 @@ class PizzaAssortmentOptimizerWtGroup:
                     self._constraints.append(
                         self._var_count_per_store_type_group[store_id][pizza_type][group] >=
                         self._var_count_per_type_group[pizza_type][group] -
-                        self._BIG_M * ( 1 - self._var_assign_store_type_group[store_id][pizza_type][group])
+                        self._BIG_M * (1 - self._var_assign_store_type_group[store_id][pizza_type][group])
                     )
                     self._constraints.append(
                         self._var_count_per_store_type_group[store_id][pizza_type][group] <=
@@ -198,11 +198,13 @@ class PizzaAssortmentOptimizerWtGroup:
         for store_id, store in self._data_center.stores.items():
             for pizza_type in self._data_center.pizza_types:
                 self._constraints.append(self._var_count_per_store_type[store_id][pizza_type] >= 0)
-                self._constraints.append(self._var_count_per_store_type[store_id][pizza_type] <= self._data_center.max_pizza_count)
+                self._constraints.append(
+                    self._var_count_per_store_type[store_id][pizza_type] <= self._data_center.max_pizza_count)
 
                 for group in range(self._data_center.num_pizza_groups):
                     self._constraints.append(self._var_count_per_store_type_group[store_id][pizza_type][group] >= 0)
-                    self._constraints.append(self._var_count_per_store_type_group[store_id][pizza_type][group] <= self._data_center.max_pizza_count)
+                    self._constraints.append(self._var_count_per_store_type_group[store_id][pizza_type][
+                                                 group] <= self._data_center.max_pizza_count)
 
                     self._constraints.append(self._var_assign_store_type_group[store_id][pizza_type][group] >= 0)
                     self._constraints.append(self._var_assign_store_type_group[store_id][pizza_type][group] <= 1)
@@ -210,7 +212,8 @@ class PizzaAssortmentOptimizerWtGroup:
         for pizza_type in self._data_center.pizza_types:
             for group in range(self._data_center.num_pizza_groups):
                 self._constraints.append(self._var_count_per_type_group[pizza_type][group] >= 0)
-                self._constraints.append(self._var_count_per_type_group[pizza_type][group] <= self._data_center.max_pizza_count)
+                self._constraints.append(
+                    self._var_count_per_type_group[pizza_type][group] <= self._data_center.max_pizza_count)
         logging.info("finish creating data type variables.")
 
     def _retrieve_opt_values(self):
@@ -218,7 +221,8 @@ class PizzaAssortmentOptimizerWtGroup:
         for store_id, store in self._data_center.stores.items():
             opt_count_per_type = {}
             for pizza_type in self._data_center.pizza_types:
-                opt_count_per_type[pizza_type] = round(float(self._var_count_per_store_type[store_id][pizza_type]))
+                opt_count_per_type[pizza_type] = round(
+                    float(self._var_count_per_store_type[store_id][pizza_type].value))
             self._opt_count_per_store_type[store_id] = opt_count_per_type
 
         # retrieve optimal values for _var_count_per_store_type_group and _var_assign_store_type_group
@@ -227,37 +231,37 @@ class PizzaAssortmentOptimizerWtGroup:
             opt_assign_per_store_type = {}
             for pizza_type in self._data_center.pizza_types:
                 opt_count_per_group = {
-                    group: round(float(self._var_count_per_store_type_group[store_id][pizza_type][group]))
+                    group: round(float(self._var_count_per_store_type_group[store_id][pizza_type][group].value))
                     for group in range(self._data_center.num_pizza_groups)
                 }
                 opt_assign_per_group = {
-                    group: round(float(self._var_assign_store_type_group[store_id][pizza_type][group]))
+                    group: round(float(self._var_assign_store_type_group[store_id][pizza_type][group].value))
                     for group in range(self._data_center.num_pizza_groups)
                 }
                 opt_count_per_store_type[pizza_type] = opt_count_per_group
                 opt_assign_per_store_type[pizza_type] = opt_assign_per_group
-            self._opt_count_per_store_type_group[store_id] = opt_count_per_type
+            self._opt_count_per_store_type_group[store_id] = opt_count_per_store_type
             self._opt_assign_store_type_group[store_id] = opt_assign_per_store_type
 
         # retrieve optimal values for _var_count_type_group
         for pizza_type in self._data_center.pizza_types:
             opt_count_per_group = {
-                group: round(float(self._var_count_per_type_group[pizza_type][group]))
+                group: round(float(self._var_count_per_type_group[pizza_type][group].value))
                 for group in range(self._data_center.num_pizza_groups)
             }
             self._opt_count_per_type_group[pizza_type] = opt_count_per_group
 
     def _show_opt_values(self):
-        df_x = pd.DataFrame(self._opt_count_per_store_type)
+        df_x = pd.DataFrame.from_dict(self._opt_count_per_store_type, orient='index')
         print(df_x)
 
-        df_v = pd.DataFrame(self._opt_count_per_store_type_group)
+        df_v = pd.DataFrame.from_dict(self._opt_count_per_store_type_group, orient='index')
         print(df_v)
 
-        df_y = pd.DataFrame(self._opt_assign_store_type_group)
+        df_y = pd.DataFrame.from_dict(self._opt_assign_store_type_group, orient='index')
         print(df_y)
 
-        df_z = pd.DataFrame(self._opt_count_per_type_group)
+        df_z = pd.DataFrame.from_dict(self._opt_count_per_type_group)
         print(df_z)
 
     @property
