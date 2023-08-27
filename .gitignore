@@ -1,6 +1,9 @@
 doc/*.aux
 doc/*.log
 doc/*.gz
+doc/model.aux
+doc/model.log
+doc/model.synctex.gz
 
 .idea
 
