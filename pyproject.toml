@@ -12,6 +12,13 @@ numpy = "^1.25.2"
 pandas = "^2.0.3"
 ortools = "^9.7.2996"
 
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q -s"
+testpaths = [
+    "tests",
+    "integration",
+]
 
 [build-system]
 requires = ["poetry-core"]

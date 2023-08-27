@@ -38,19 +38,22 @@ class OptService:
         data_center: DataCenter = self._input_processor.process(pizza_data)
         self._validator = Validator(data_center)
 
-        # solve model 1
-        # self._pizza_assortment_optimizer.optimize(data_center)
-        # optimal_assortment_1 = self._pizza_assortment_optimizer.optimal_assortment
-        # error_1 = self._validator.validate_model1_solution(optimal_assortment_1)
-        # if len(error_1) > 0:
-        #     logging.error(error_1)
+        if enable_group_constraint:
+            # solve model 2
+            self._pizza_assortment_optimizer_wt_group.optimize(data_center)
+            optimal_assortment = self._pizza_assortment_optimizer_wt_group.optimal_assortment
+            error_msg = self._validator.validate_model2_solution(optimal_assortment)
+        else:
+            # solve model 1
+            self._pizza_assortment_optimizer.optimize(data_center)
+            optimal_assortment = self._pizza_assortment_optimizer.optimal_assortment
+            error_msg = self._validator.validate_model1_solution(optimal_assortment)
 
-        # solve model 2
-        self._pizza_assortment_optimizer_wt_group.optimize(data_center)
-
-        # prepare output
+        if len(error_msg) > 0:
+            logging.error(error_msg)
 
         logging.info("OptService optimize() completes.")
+        return optimal_assortment, error_msg
 
 
 if __name__ == "__main__":
