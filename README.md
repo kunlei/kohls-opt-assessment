@@ -1,12 +1,12 @@
 # Pizza Assortment Optimization
 
-The code in this repository aims to solve the pizza assortment optimization problem.
+This repository contains files used to solve the pizza assortment optimization problem.
 There are three directories:
 
 + `\doc`: 
   + The `Take_home_assignment_for_DecSci.pdf` contains the problem description and modeling requirements.
-  + The `model.tex` contains the `LaTeX` source file for the mathematical models.
   + The `model.pdf` contains the mathematical models to solve the pizza assortment optimization problem.
+  + The `model.tex` contains the `LaTeX` source file for the mathematical models.
 + `\src`:
   + The `opt_service.py` is the interface to the optimizer.
   + The `\common` package defines core classes for modeling purposes.

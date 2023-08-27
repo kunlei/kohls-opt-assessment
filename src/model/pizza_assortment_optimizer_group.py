@@ -252,15 +252,27 @@ class PizzaAssortmentOptimizerWtGroup:
 
     def _show_opt_values(self):
         df_x = pd.DataFrame.from_dict(self._opt_count_per_store_type, orient='index')
+        df_x.index.name = 'store'
+        df_x.columns.name = 'pizza type'
+        print("\nshow pizza assortment results: ")
         print(df_x)
 
         df_v = pd.DataFrame.from_dict(self._opt_count_per_store_type_group, orient='index')
+        df_v.index.name = 'store'
+        df_v.columns.name = 'pizza type'
+        print("\nshow pizza count in each pizza type: ")
         print(df_v)
 
         df_y = pd.DataFrame.from_dict(self._opt_assign_store_type_group, orient='index')
+        df_y.index.name = 'store'
+        df_y.columns.name = 'pizza type'
+        print("\nshow store assignment in each pizza type: ")
         print(df_y)
 
         df_z = pd.DataFrame.from_dict(self._opt_count_per_type_group)
+        df_z.index.name = 'group'
+        df_z.columns.name = 'pizza type'
+        print("\nshow pizza count for each group")
         print(df_z)
 
     @property

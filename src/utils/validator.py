@@ -108,6 +108,9 @@ class Validator:
 
         import pandas as pd
         df = pd.DataFrame.from_dict(groups_by_type, orient='index')
+        df.index.name = 'pizza type'
+        df.columns.name = 'pizza group'
+        print("\nshow store groups by pizza type: ")
         print(df)
 
         error_msg = {}

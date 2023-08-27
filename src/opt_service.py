@@ -1,4 +1,5 @@
 import pandas as pd
+import logging
 
 from src.common.data_center import DataCenter
 from src.processor.input_processor import InputProcessor
@@ -6,7 +7,6 @@ from src.processor.output_processor import OutputProcessor
 from src.utils.validator import Validator
 from src.model.pizza_assortment_optimizer import PizzaAssortmentOptimizer
 from src.model.pizza_assortment_optimizer_group import PizzaAssortmentOptimizerWtGroup
-import logging
 
 logging.basicConfig(level=logging.INFO)
 
@@ -31,6 +31,12 @@ class OptService:
         logging.info("OptService constructor completes.")
 
     def optimize(self, pizza_data: pd.DataFrame, enable_group_constraint: bool):
+        """
+        the optimization interface
+        :param pizza_data: input data
+        :param enable_group_constraint: a boolean variable indicating whether to consider the group constraints
+        :return:
+        """
         logging.info("OptService optimize() starts.")
         # process input for optimizer use
         data_center: DataCenter = self._input_processor.process(pizza_data)
@@ -51,5 +57,6 @@ class OptService:
         if len(error_msg) > 0:
             logging.error(error_msg)
 
+        result = self._output_processor.process(optimal_assortment)
         logging.info("OptService optimize() completes.")
-        return optimal_assortment, error_msg
+        return result, error_msg

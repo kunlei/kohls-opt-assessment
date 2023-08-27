@@ -13,4 +13,6 @@ class TestModel2:
 
         opt_service = OptService()
         opt_assortment, error_msg = opt_service.optimize(pizza, True)
+        print("\nshow pizza assortment: ")
+        print(opt_assortment)
         assert len(error_msg) < 1
