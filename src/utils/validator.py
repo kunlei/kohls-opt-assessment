@@ -34,6 +34,7 @@ class Validator:
         """
         validate model 2 result
         :param assortment: model 2 output
+        :param group_assignment: assignment
         :return: error message if any
         """
         errors = {}

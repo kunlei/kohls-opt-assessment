@@ -54,16 +54,16 @@ class PizzaAssortmentOptimizer:
             var_per_type = {
                 pizza_type: cpy.Variable(name=f"x_s{store_id}_t{pizza_type}",
                                          integer=True)
-                for pizza_type in store.prices
+                for pizza_type in self._data_center.pizza_types
             }
             self._var_pizza_count[store_id] = var_per_type
         logging.info("finish creating decision variables.")
 
     def _create_objective(self):
         obj_expr = [
-            store.prices[pizza_type] *
+            (store.prices[pizza_type] - store.costs[pizza_type]) *
             store.alpha[pizza_type] *
-            self._var_pizza_count[store_id][pizza_type] ** store.beta[pizza_type]
+            (self._var_pizza_count[store_id][pizza_type] ** store.beta[pizza_type])
             for store_id, store in self._data_center.stores.items()
             for pizza_type in self._data_center.pizza_types
         ]

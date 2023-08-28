@@ -64,6 +64,7 @@ class PizzaAssortmentOptimizerWtGroup:
             self._retrieve_opt_values()
             self._show_opt_values()
         else:
+            self._opt_obj = 0
             logging.info(f"solve failure, status: {self._problem.status}")
 
         logging.info("PizzaAssortOptimizerWtGroup optimizer() completes.")
@@ -74,7 +75,7 @@ class PizzaAssortmentOptimizerWtGroup:
             var_per_type = {
                 pizza_type: cpy.Variable(name=f"x_s{store_id}_t{pizza_type}",
                                          integer=True)
-                for pizza_type in store.prices
+                for pizza_type in self._data_center.pizza_types
             }
             self._var_count_per_store_type[store_id] = var_per_type
 
@@ -114,9 +115,9 @@ class PizzaAssortmentOptimizerWtGroup:
 
     def _create_objective(self):
         obj_expr = [
-            store.prices[pizza_type] *
+            (store.prices[pizza_type] - store.costs[pizza_type]) *
             store.alpha[pizza_type] *
-            self._var_count_per_store_type[store_id][pizza_type] ** store.beta[pizza_type]
+            (self._var_count_per_store_type[store_id][pizza_type] ** store.beta[pizza_type])
             for store_id, store in self._data_center.stores.items()
             for pizza_type in self._data_center.pizza_types
         ]
